@@ -28,12 +28,12 @@ class Item(models.Model):
     )
 
     # サンプル項目3 整数
-    #sample_3 = models.CharField(
-    #    verbose_name='年月',
-    #    max_length=8,
-    #    blank=True,
-    #    null=True,
-    #)
+    sample_3 = models.CharField(
+        verbose_name='年月',
+        max_length=8,
+        blank=True,
+        null=True,
+    )
 
     # サンプル項目4 浮動小数点
     #sample_4 = models.FloatField(
