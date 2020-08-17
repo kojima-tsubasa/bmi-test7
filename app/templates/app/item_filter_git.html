@@ -23,18 +23,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="float-left m-1">
-                    <a class="btn btn-outline-dark" href="{% url 'select' '202006' %}">202006</a>
-                    <a class="btn btn-outline-dark" href="{% url 'select' '202007' %}">202007</a>
-                    <a class="btn btn-outline-dark" href="{% url 'select' '202008' %}">202008</a>
-                </div>
-            </div>
-        </div>
-
-
         <div class="row">
             <div class="col-12">
                 <a class="btn btn-secondary filtered" style="visibility:hidden" href="/?page=1">検索を解除</a>
@@ -50,57 +38,68 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <div class="float-left m-1">
-                    {% ifequal request.path|slice:"1:7" "select" %}
-                        <p>{{ request.path|slice:"8:14" }}収支</p>
-                    {% else %}
-                        <p>{{ yearmonth }}収支</p>
-                    {% endifequal %}
-                </div>
-            </div>
-        </div>
+<table class="table" id="table_1">
+    <thead>
+        <tr>
+            <th>機種名</th>
+            <th>収支</th>
+            <th>作成時間</th>
+        </tr>
+    </thead>
+                    {% for item in item_list %}
+    <tbody>
+        <tr>
+            <td><p>{{ item.sample_1|default_if_none:"未入力" }}</p></td>
+            <td><p>{{ item.sample_2|default_if_none:"未入力" }}</p></td>
+            <td><p>{{ item.created_at|date:"Y/m/d G:i:s" }}</p></td>
+            <td><a class="btn btn-outline-dark " href="{% url 'delete' item.pk %}">削除</a></td>
+        </tr>
 
-        <table class="table" id="table_1">
-            <thead>
-                <tr>
-                    <th>機種名</th>
-                    <th>収支</th>
-                    <th>作成時間</th>
-                </tr>
-            </thead>
+    </tbody>
 
-            {% for item in item_list %}
-                {% ifequal request.path|slice:"1:7" "select" %}
-                    {% ifequal item.sample_3 request.path|slice:"8:14" %}
-                        <tbody>
-                            <tr>
-                                <td><p>{{ item.sample_1|default_if_none:"未入力" }}</p></td>
-                                <td><p>{{ item.sample_2|default_if_none:"未入力" }}</p></td>
-                                <td><p>{{ item.created_at|date:"Y/m/d G:i:s" }}</p></td>
-                                <td><a class="btn btn-outline-dark " href="{% url 'delete' item.pk %}">削除</a></td>
-                            </tr>
-                        </tbody>
-                    {% endifequal %}
-                {% else %}
-                    {% ifequal item.sample_3 yearmonth %}
-                        <tbody>
-                            <tr>
-                                <td><p>{{ item.sample_1|default_if_none:"未入力" }}</p></td>
-                                <td><p>{{ item.sample_2|default_if_none:"未入力" }}</p></td>
-                                <td><p>{{ item.created_at|date:"Y/m/d G:i:s" }}</p></td>
-                                <td><a class="btn btn-outline-dark " href="{% url 'delete' item.pk %}">削除</a></td>
-                            </tr>
-                        </tbody>
-                    {% endifequal %}
-                {% endifequal %}
-            {% empty %}
-                <li class="list-group-item">
-                    対象のデータがありません
-                </li>
-            {% endfor %}
-        </table>
+
+                            <!--
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>機種名</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>{{ item.sample_1|default_if_none:"未入力" }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>収支</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>{{ item.sample_2|default_if_none:"未入力" }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>作成時間</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>{{ item.created_at|date:"Y/m/d G:i:s" }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-right">
+                                        <a class="btn btn-outline-dark " href="{% url 'detail' item.pk %}">詳細</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'update' item.pk %}">編集</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'delete' item.pk %}">削除</a>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">
+                            対象のデータがありません
+                        </li>
+                    {% endfor %}
+</table>
 <input type="button" value="合計" onclick="calc_total();"/>
 
 <body onload = "calc_total();"></body>
